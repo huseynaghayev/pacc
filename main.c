@@ -10,7 +10,7 @@
 
 #define VERSION "0.1.0"
 
-#define IMG_NAME_MAX 64
+#define IMG_NAME_MAX 128
 
 #define error(fmt, ...) ( \
     fprintf(stderr, "pacc: "), \
@@ -26,8 +26,8 @@
     fputc('\n', stdout) \
 )
 
-#define ROW_MAX 16
-#define COL_MAX 16
+#define ROW_MAX 64
+#define COL_MAX 64
 
 static struct {
     int exist;

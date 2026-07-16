@@ -16,6 +16,7 @@
     fprintf(stderr, "pacc: "), \
     fprintf(stderr, fmt, __VA_ARGS__), \
     fputc('\n', stderr), \
+    fprintf(stderr, "type \'pacc --help\' or \'pacc -h\' for more information\n"), \
     exit(1) \
 )
 
@@ -51,7 +52,38 @@ int main(int argc, char **argv)
             printf("pacc %s\n", VERSION);
             return 0;
         }
-        else
+        if (streq(arg, "--help") || streq(arg, "-h")) {
+            printf("Usage: pacc [OPTIONS] < image-files-names\n"
+                   "pacc combines multiple images into a single sprite sheet,\n"
+                   "plus a JSON atlas describing each sprite's position.\n"
+                   "\n"
+                   "Reads image file paths from stdin. Each line becomes one row in the sheet;\n"
+                   "multiple images on the same line are placed side-by-side in that row.\n"
+                   "After each newline, a new row begins.\n"
+                   "\n"
+                   "Options:\n"
+                   "  -h, --help          Show this help message and exit\n"
+                   "  -v, --version       Show version and exit\n"
+                   "  --space INTEGER     Pixels of padding around each image (default: 2)\n"
+                   "  --output FILE       Output sheet file name (default: sheet.png)\n"
+                   "  --atlas FILE        Output atlas file name (default: atlas.json)\n"
+                   "  --minify            Disable pretty formatting in the atlas file\n"
+                   "\n"
+                   "Examples:\n"
+                   "  pacc --space 8 --output my_sheet.png <<EOF\n"
+                   "  image1.png image2.png\n"
+                   "  image3.png\n"
+                   "  image4.png\n"
+                   "  EOF\n"
+                   "\n"
+                   "  echo \"image1.png image2.png\n"
+                   "  image3.png\n"
+                   "  image4.png\" > my_sprites.txt\n"
+                   "\n"
+                   "  cat my_sprites.txt | pacc --space 4 --minify\n"
+            );
+            return 0;
+        }
         if (streq(arg, "--space")) {
             if (++i >= argc) {
                 error_reqval("--space");
